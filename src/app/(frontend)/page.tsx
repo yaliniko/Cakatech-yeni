@@ -1,59 +1,24 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
-
-import config from '@/payload.config'
-import './styles.css'
-
-export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
-
+// Geçici ana sayfa: Aşama 4'te CMS'ten beslenen gerçek ana sayfa ile değiştirilecek.
+export default function HomePage() {
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 text-center">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 size-[42rem] -translate-x-1/2 rounded-full bg-brand/20 blur-3xl"
+      />
+      <p className="font-display text-sm font-medium tracking-[0.3em] text-accent uppercase">
+        FIRST Tech Challenge · #25160
+      </p>
+      <h1 className="mt-4 font-display text-6xl font-bold tracking-tight sm:text-8xl">
+        Çaka<span className="text-brand">tech</span>
+      </h1>
+      <p className="mt-6 max-w-xl text-lg text-muted">Yeni site yapım aşamasında.</p>
+      <a
+        href="/admin"
+        className="mt-10 rounded-full bg-accent px-6 py-3 font-display font-semibold text-ink transition hover:bg-accent-hi"
+      >
+        Yönetim paneli
+      </a>
+    </section>
   )
 }

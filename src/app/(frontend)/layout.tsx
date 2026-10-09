@@ -1,16 +1,31 @@
+import type { Metadata } from 'next'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import React from 'react'
 import './styles.css'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const grotesk = Space_Grotesk({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-grotesk',
+  display: 'swap',
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Çakatech #25160 — FTC Robotik Takımı',
+    template: '%s · Çakatech #25160',
+  },
+  description: "Çakatech, FIRST Tech Challenge'da yarışan #25160 numaralı lise robotik takımı.",
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="tr" className={`${inter.variable} ${grotesk.variable}`}>
       <body>
         <main>{children}</main>
       </body>
