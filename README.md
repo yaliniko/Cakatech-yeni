@@ -62,6 +62,17 @@ src/
   collections/   Üyeler, Robotlar, Yarışmalar, Ödüller, Sponsorlar, Sponsorluk Başvuruları,
                  Haberler & Etkinlikler, Kaynaklar, Görseller, Kullanıcılar
   migrations/    veritabanı şeması geçmişi
-  app/(frontend) public site (şimdilik geçici ana sayfa)
+  hooks/         içerik değişince sitenin önbelleğini yenileyen hook
+  i18n/          site dilleri (tr kökte, en /en altında) ve arayüz metinleri
+  lib/           sitenin veri sorguları (Payload local API)
+  components/    site bileşenleri (menü, alt bilgi, kartlar)
+  proxy.ts       dil yönlendirmesi: /team → içeride /tr/team
+  app/(frontend)/[lang]  public site: ana sayfa, takım, yarışmalar, kaynaklar, uygulamalar, sponsorlar
   app/(payload)  yönetim paneli + API
 ```
+
+Site sayfaları statik üretilir ve panelde içerik kaydedilince otomatik yenilenir.
+Arayüz metinleri (başlıklar, butonlar) `src/i18n/dictionaries.ts` içindedir; içerik panelden gelir.
+Uygulamalar sayfası: HTML dosyasını `public/uygulamalar/` içine koy ve `src/lib/apps.ts`'e bir kayıt ekle.
+İsteğe bağlı `NEXT_PUBLIC_SITE_URL` (ör. `https://cakatech.org`) sitemap ve paylaşım kartlarında kullanılır;
+verilmezse Vercel'in üretim adresi kullanılır.

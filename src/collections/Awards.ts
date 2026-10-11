@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
+import { revalidateHooks } from '@/hooks/revalidateSite'
 import { orderingFields } from '@/fields'
 
 // Django competitions.Achievement karşılığı.
@@ -9,13 +10,14 @@ export const Awards: CollectionConfig = {
   labels: { singular: 'Ödül', plural: 'Ödüller' },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'competition', 'date', 'isActive'],
-    group: 'Takım',
+    defaultColumns: ['title', 'competition', 'date'],
+    group: 'İçerik',
   },
   defaultSort: '-date',
   access: { read: activeOrLoggedIn, create: loggedIn, update: loggedIn, delete: loggedIn },
+  hooks: revalidateHooks,
   fields: [
-    { name: 'title', label: 'Ödül adı', type: 'text', required: true, localized: true },
+    { name: 'title', label: 'Ad', type: 'text', required: true, localized: true },
     {
       type: 'row',
       fields: [
@@ -34,7 +36,7 @@ export const Awards: CollectionConfig = {
       ],
     },
     { name: 'description', label: 'Açıklama', type: 'textarea', localized: true },
-    { name: 'image', label: 'Görsel / ikon', type: 'upload', relationTo: 'media' },
+    { name: 'image', label: 'Görsel', type: 'upload', relationTo: 'media' },
     ...orderingFields,
   ],
 }

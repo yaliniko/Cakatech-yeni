@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
+import { revalidateHooks } from '@/hooks/revalidateSite'
 import { orderingFields } from '@/fields'
 
 // Django team.Member.SubTeam ile aynı değerler (veri taşımada birebir eşleşsin).
@@ -19,22 +20,23 @@ export const Members: CollectionConfig = {
   labels: { singular: 'Üye', plural: 'Üyeler' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'role', 'subteam', 'isActive'],
-    group: 'Takım',
+    defaultColumns: ['name', 'subteam', 'isActive'],
+    group: 'İçerik',
   },
   defaultSort: 'order',
   access: { read: activeOrLoggedIn, create: loggedIn, update: loggedIn, delete: loggedIn },
+  hooks: revalidateHooks,
   fields: [
     { name: 'name', label: 'Ad soyad', type: 'text', required: true },
     {
       type: 'row',
       fields: [
-        { name: 'role', label: 'Görev / unvan', type: 'text', localized: true },
+        { name: 'role', label: 'Görev', type: 'text', localized: true },
         { name: 'subteam', label: 'Alt takım', type: 'select', options: SUBTEAMS },
       ],
     },
     { name: 'photo', label: 'Fotoğraf', type: 'upload', relationTo: 'media' },
-    { name: 'bio', label: 'Kısa biyografi', type: 'textarea', localized: true },
+    { name: 'bio', label: 'Biyografi', type: 'textarea', localized: true },
     {
       type: 'row',
       fields: [

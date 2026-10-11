@@ -68,12 +68,10 @@ export interface Config {
   blocks: {};
   collections: {
     members: Member;
-    robots: Robot;
     competitions: Competition;
     awards: Award;
     sponsors: Sponsor;
     'sponsorship-inquiries': SponsorshipInquiry;
-    posts: Post;
     resources: Resource;
     media: Media;
     users: User;
@@ -85,12 +83,10 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     members: MembersSelect<false> | MembersSelect<true>;
-    robots: RobotsSelect<false> | RobotsSelect<true>;
     competitions: CompetitionsSelect<false> | CompetitionsSelect<true>;
     awards: AwardsSelect<false> | AwardsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     'sponsorship-inquiries': SponsorshipInquiriesSelect<false> | SponsorshipInquiriesSelect<true>;
-    posts: PostsSelect<false> | PostsSelect<true>;
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -206,61 +202,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "robots".
- */
-export interface Robot {
-  id: number;
-  name: string;
-  /**
-   * Örn. DECODE
-   */
-  seasonName: string;
-  /**
-   * Örn. 2025-26
-   */
-  seasonYears: string;
-  summary?: string | null;
-  heroImage?: (number | null) | Media;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  specs?:
-    | {
-        label: string;
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  gallery?: (number | Media)[] | null;
-  cadUrl?: string | null;
-  codeUrl?: string | null;
-  featured?: boolean | null;
-  /**
-   * Boş bırakırsan başlıktan otomatik üretilir.
-   */
-  slug?: string | null;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
-  order?: number | null;
-  isActive?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "competitions".
  */
 export interface Competition {
@@ -344,43 +285,6 @@ export interface SponsorshipInquiry {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  /**
-   * Liste ve paylaşım kartlarında görünür (1-2 cümle).
-   */
-  excerpt?: string | null;
-  heroImage?: (number | null) | Media;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  category: 'news' | 'outreach';
-  publishedAt?: string | null;
-  /**
-   * Boş bırakırsan başlıktan otomatik üretilir.
-   */
-  slug?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "resources".
  */
 export interface Resource {
@@ -458,10 +362,6 @@ export interface PayloadLockedDocument {
         value: number | Member;
       } | null)
     | ({
-        relationTo: 'robots';
-        value: number | Robot;
-      } | null)
-    | ({
         relationTo: 'competitions';
         value: number | Competition;
       } | null)
@@ -476,10 +376,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsorship-inquiries';
         value: number | SponsorshipInquiry;
-      } | null)
-    | ({
-        relationTo: 'posts';
-        value: number | Post;
       } | null)
     | ({
         relationTo: 'resources';
@@ -554,34 +450,6 @@ export interface MembersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "robots_select".
- */
-export interface RobotsSelect<T extends boolean = true> {
-  name?: T;
-  seasonName?: T;
-  seasonYears?: T;
-  summary?: T;
-  heroImage?: T;
-  description?: T;
-  specs?:
-    | T
-    | {
-        label?: T;
-        value?: T;
-        id?: T;
-      };
-  gallery?: T;
-  cadUrl?: T;
-  codeUrl?: T;
-  featured?: T;
-  slug?: T;
-  order?: T;
-  isActive?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "competitions_select".
  */
 export interface CompetitionsSelect<T extends boolean = true> {
@@ -640,22 +508,6 @@ export interface SponsorshipInquiriesSelect<T extends boolean = true> {
   isRead?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
- */
-export interface PostsSelect<T extends boolean = true> {
-  title?: T;
-  excerpt?: T;
-  heroImage?: T;
-  content?: T;
-  category?: T;
-  publishedAt?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

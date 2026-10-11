@@ -8,7 +8,7 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'roles'],
-    group: 'Sistem',
+    group: 'Ayarlar',
   },
   auth: true,
   access: {
@@ -44,10 +44,6 @@ export const Users: CollectionConfig = {
         { label: 'Editör', value: 'editor' },
       ],
       access: { create: isAdminField, update: isAdminField },
-      admin: {
-        description:
-          'Editör içerik düzenler; kullanıcıları ve site ayarlarını yalnızca Yönetici değiştirir.',
-      },
     },
   ],
 }

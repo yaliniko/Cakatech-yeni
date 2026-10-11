@@ -1,0 +1,25 @@
+// Panel görünümü: sitenin siyah-sarı paletiyle sade, keskin köşeli.
+// Payload stilleri bir CSS katmanında (@layer) olduğundan buradaki katmansız kurallar önceliklidir.
+
+:root {
+  --style-radius-s: 0px;
+  --style-radius-m: 0px;
+  --style-radius-l: 0px;
+}
+
+html[data-theme='dark'] {
+  --theme-bg: #070707;
+  --theme-elevation-0: #070707;
+  --theme-elevation-50: #101010;
+}
+
+.btn--style-primary {
+  background-color: #ffd200;
+  color: #070707;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #ffe14d;
+    color: #070707;
+  }
+}

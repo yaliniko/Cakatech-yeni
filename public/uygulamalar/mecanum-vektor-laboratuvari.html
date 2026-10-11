@@ -1,0 +1,64 @@
+<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mecanum Vektör Laboratuvarı</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#101925;color:#e9eff5;font:16px system-ui}header{padding:24px 30px;border-bottom:1px solid #344253}h1{margin:0;font-size:26px}header p{color:#b4c4d4;margin-bottom:0}main{display:grid;grid-template-columns:310px 1fr;gap:20px;padding:24px}aside,section{background:#182637;border-radius:14px;padding:20px}label{display:block;margin:13px 0}input[type=range]{width:100%;accent-color:#55ddce}input[type=number]{width:85px;background:#26374a;color:white;border:1px solid #6b7c8d;padding:6px}select,button{padding:9px;background:#2b435b;border:1px solid #536e84;border-radius:6px;color:white;cursor:pointer}button{margin:4px}canvas{width:100%;background:#101b29;border-radius:10px}pre{white-space:pre-wrap;font-size:14px;line-height:1.55}small{display:block;color:#bccbda;line-height:1.6}.warning{color:#ffce76}a{color:#55ddce}@media(max-width:850px){main{grid-template-columns:1fr}aside{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
+main{grid-template-columns:260px minmax(0,1fr);gap:14px;padding:16px;max-width:2000px;margin:auto}aside,section{padding:16px}section{min-width:0}canvas{display:block;width:100%;height:auto}header{padding:16px 24px}pre{font-size:16px}button{font-size:14px}aside small{font-size:13px}.legend{display:flex;flex-wrap:wrap;gap:10px 20px;margin:4px 0 14px;font-weight:700}.legend span:before{content:'━➤';margin-right:8px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.toolbar h2{font-size:18px;margin:0}.stage:fullscreen{background:#101925;overflow:auto;padding:20px}.stage:fullscreen canvas{width:auto;max-width:100%;height:78vh;margin:auto}.stage:fullscreen .legend{justify-content:center}@media(max-width:850px){main{grid-template-columns:1fr}aside{grid-template-columns:1fr 1fr}pre{font-size:14px}}@media(max-width:500px){aside{display:block}}
+</style>
+<header><h1>Mecanum Vektör Laboratuvarı</h1><p>Gövde +x ileri · +y sol · +Wz saat yönünün tersi · Teker sırası FL, FR, RL, RR</p></header>
+<main><aside><div><label>Yerleşim <select id="config"><option>X</option><option>O</option></select></label><label><input id="forceX" type="checkbox"> X kontrolcüsünü kullan</label><label>a yarı dingil (m) <input id="a" type="number" value="0.18" min="0.10" max="0.30" step="0.01"></label><label>b yarı iz (m) <input id="b" type="number" value="0.17" min="0.10" max="0.30" step="0.01"></label><label>Teker çapı: 96 mm</label><label>Görsel yakınlaştırma <output id="zoomVal">2.4×</output><input id="zoom" type="range" min="1" max="3.5" step="0.1" value="2.4"></label><label>Vektör büyüklüğü <output id="vectorVal">1.8×</output><input id="vectors" type="range" min="0.5" max="3" step="0.1" value="1.8"></label><label><input id="follow" type="checkbox" checked> Robotu merkezde takip et</label><label>RPM sınırı <input id="rpm" type="number" value="312" min="1" max="1000"></label><label>Örnek tork ölçeği (N·m) <input id="tau" type="number" value="0.10" min="0" max="1" step="0.01"></label></div><div><label>Vx <output id="ox"></output> m/s<input id="vx" type="range" min="-1" max="1" step="0.01" value="0"></label><label>Vy <output id="oy"></output> m/s<input id="vy" type="range" min="-1" max="1" step="0.01" value="0.50"></label><label>Wz <output id="oz"></output> rad/s<input id="wz" type="range" min="-3" max="3" step="0.02" value="0"></label><button data-preset="forward">İleri</button><button data-preset="strafe">Sola strafe</button><button data-preset="rotate">Dönüş</button><button id="stop">Dur</button><button id="pause">Duraklat</button><button id="reset">Konumu sıfırla</button></div><small>Turkuaz: teker hızı. Beyaz: gövde hızı. Sarı: örnek temas kuvveti. Mor: örnek toplam kuvvet. Kuvvetler ayrı bir tork varsayımından çizilir; hareket yalnız kinematiktir. Yakınlaştırma ve vektör büyüklüğü yalnız çizimi etkiler; fiziksel değerleri değiştirmez. Kamera robotu takip ederken ızgara hareket eder.</small></aside>
+<section class="stage" id="stage"><div class="toolbar"><h2>Canlı vektör görünümü</h2></div><div class="legend"><span style="color:#55ffea">Teker hızı</span><span style="color:#fff">Gövde hızı</span><span style="color:#ffdc52">Temas kuvveti</span><span style="color:#eb98ff">Toplam kuvvet</span></div><canvas id="view" width="1400" height="1000" aria-label="Mecanum robot animasyonu"></canvas><pre id="readout"></pre><p class="warning" id="warning"></p><small>Üstte görünen silindir eksenleri çizilmiştir. Sarı kuvvetin yönü alttaki temas eksenidir. Net moment sayısal gösterilir. O ve a=b için yaw gözlenemez; minimum norm çözümü Wz=0 seçer.</small></section></main>
+<script>
+'use strict';
+const el=id=>document.getElementById(id), cv=el('view'), ctx=cv.getContext('2d');
+const R=.048, names=['FL','FR','RL','RR'];
+let pose=[0,0,0], phases=[0,0,0,0], trail=[], paused=false, last=null;
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
+function number(id,lo,hi,fallback){let n=Number(el(id).value);return Number.isFinite(n)?clamp(n,lo,hi):fallback}
+function matrix(a,b,config){let xy=[[a,b],[a,-b],[-a,b],[-a,-b]],s=config==='X'?[-1,1,1,-1]:[1,-1,-1,1];return xy.map(([x,y],i)=>[1,s[i],-y+s[i]*x]);}
+function mul(A,v){return A.map(row=>row.reduce((s,x,j)=>s+x*v[j],0));}
+function solve(A,w){ // Orthogonal columns for the symmetric rectangular layouts.
+ return [0,1,2].map(j=>{let den=A.reduce((s,row)=>s+row[j]*row[j],0);return den<1e-12?0:R*A.reduce((s,row,i)=>s+row[j]*w[i],0)/den;});
+}
+function state(){let a=number('a',.1,.3,.18), b=number('b',.1,.3,.17), config=el('config').value;
+ let A=matrix(a,b,config), control=matrix(a,b,el('forceX').checked?'X':config), target=['vx','vy','wz'].map(id=>Number(el(id).value));
+ let cap=number('rpm',1,1000,312)*2*Math.PI/60, raw=mul(control,target).map(v=>v/R), norm=Math.max(1,...raw.map(v=>Math.abs(v)/cap)), wheels=raw.map(v=>v/norm), actual=solve(A,wheels);
+ let residual=Math.hypot(...mul(A,actual).map((v,i)=>R*wheels[i]-v)), tau=number('tau',0,1,.1), torques=wheels.map(w=>tau*w/cap);
+ let forces=A.map((row,i)=>[torques[i]/R,torques[i]*row[1]/R]);
+ let total=[0,1,2].map(j=>A.reduce((sum,row,i)=>sum+row[j]*torques[i]/R,0));
+ return {a,b,A,target,wheels,actual,residual,total,forces,norm,config};
+}
+function screen(x,y){let scale=230*number('zoom',1,3.5,2.4),follow=el('follow').checked;return [cv.width/2-(y-(follow?pose[1]:0))*scale,cv.height/2-(x-(follow?pose[0]:0))*scale]}
+function world(x,y){let c=Math.cos(pose[2]),s=Math.sin(pose[2]);return [pose[0]+c*x-s*y,pose[1]+s*x+c*y]}
+function point(x,y){return screen(...world(x,y))}
+function line(p,q,color,width=2){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(...p);ctx.lineTo(...q);ctx.stroke()}
+function arrow(x,y,dx,dy,color,width=3){
+ let gain=number('vectors',.5,3,1.8),p=point(x,y),q=point(x+dx*gain,y+dy*gain);
+ let length=Math.hypot(q[0]-p[0],q[1]-p[1]);if(length<1)return;
+ let angle=Math.atan2(q[1]-p[1],q[0]-p[0]),head=Math.min(24,length*.45),shaft=width*2.2;
+ ctx.save();ctx.lineCap='round';
+ line(p,q,'#08111b',shaft+6);line(p,q,color,shaft);
+ ctx.beginPath();ctx.moveTo(...q);ctx.lineTo(q[0]-head*Math.cos(angle-.48),q[1]-head*Math.sin(angle-.48));ctx.lineTo(q[0]-head*Math.cos(angle+.48),q[1]-head*Math.sin(angle+.48));ctx.closePath();ctx.fillStyle=color;ctx.strokeStyle='#08111b';ctx.lineWidth=2;ctx.stroke();ctx.fill();ctx.restore();
+}
+function polygon(points,fill){ctx.beginPath();points.forEach(([x,y],i)=>{let p=point(x,y);i?ctx.lineTo(...p):ctx.moveTo(...p)});ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle='#6c8299';ctx.stroke()}
+function draw(dt){let s=state(); if(!paused){let mid=pose[2]+s.actual[2]*dt/2;pose[0]+=(s.actual[0]*Math.cos(mid)-s.actual[1]*Math.sin(mid))*dt;pose[1]+=(s.actual[0]*Math.sin(mid)+s.actual[1]*Math.cos(mid))*dt;pose[2]+=s.actual[2]*dt;phases=phases.map((p,i)=>p+s.wheels[i]*dt);if(!el('follow').checked&&(Math.abs(pose[0])>1.05||Math.abs(pose[1])>1.65)){pose[0]=pose[1]=0;trail=[]}trail.push([pose[0],pose[1]]);if(trail.length>1200)trail.shift()}
+ ctx.clearRect(0,0,cv.width,cv.height);let gx=Math.round(pose[0]/.25),gy=Math.round(pose[1]/.25);for(let i=-16;i<=16;i++){line(screen((gx+i)*.25,(gy-16)*.25),screen((gx+i)*.25,(gy+16)*.25),'#223346',1);line(screen((gx-16)*.25,(gy+i)*.25),screen((gx+16)*.25,(gy+i)*.25),'#223346',1)}
+ if(trail.length){ctx.strokeStyle='#395771';ctx.beginPath();trail.forEach((p,i)=>i?ctx.lineTo(...screen(...p)):ctx.moveTo(...screen(...p)));ctx.stroke()}
+ polygon([[s.a,s.b-.04],[s.a,-s.b+.04],[-s.a,-s.b+.04],[-s.a,s.b-.04]],'#2c465e');
+ let positions=[[s.a,s.b],[s.a,-s.b],[-s.a,s.b],[-s.a,-s.b]];
+ positions.forEach(([x,y],i)=>{polygon([[x+.048,y+.025],[x+.048,y-.025],[x-.048,y-.025],[x-.048,y+.025]],'#08111b');
+ // Top roller axis slope is opposite to the bottom contact slope.
+ let topSign=-s.A[i][1];
+ for(let j=-2;j<=2;j++){let off=((j*.020+phases[i]*.008+.05)% .1+.1)%.1-.05;line(point(x+off-.012,y-topSign*.012),point(x+off+.012,y+topSign*.012),'#d9e5ef',2)}
+ arrow(x,y,.10*R*s.wheels[i],0,'#55ffea');arrow(x,y,.027*s.forces[i][0],.027*s.forces[i][1],'#ffdc52',2);
+ let p=point(x+(x>0?.075:-.075),y);ctx.fillStyle='white';ctx.font='bold 23px system-ui';ctx.fillText(names[i],p[0]-14,p[1]);});
+ arrow(0,0,.22*s.actual[0],.22*s.actual[1],'#ffffff',4);arrow(0,0,.04*s.total[0],.04*s.total[1],'#eb98ff',3);arrow(s.a*.6,0,.06,0,'#88a9c7',2);
+ ctx.fillStyle='#b8ccde';ctx.font='20px system-ui';ctx.fillText('Dünya +X ↑   +Y ←   ızgara 0.25 m',20,28);
+ el('zoomVal').textContent=number('zoom',1,3.5,2.4).toFixed(1)+'×';el('vectorVal').textContent=number('vectors',.5,3,1.8).toFixed(1)+'×';
+ ['ox','oy','oz'].forEach((id,i)=>el(id).textContent=s.target[i].toFixed(2));
+ el('readout').textContent=`Yerleşim ${s.config} | normalizasyon ${s.norm.toFixed(3)}\nGerçekleşen Vx ${s.actual[0].toFixed(3)} m/s   Vy ${s.actual[1].toFixed(3)} m/s   Wz ${s.actual[2].toFixed(3)} rad/s\nRPM [FL FR RL RR] = ${s.wheels.map(w=>(w*60/(2*Math.PI)).toFixed(1)).join('  ')}\nÖrnek kuvvet Fx ${s.total[0].toFixed(2)} N  Fy ${s.total[1].toFixed(2)} N  Moment ${s.total[2].toFixed(3)} N·m\nKaymasız uyumluluk artığı ||rω−Av|| = ${s.residual.toExponential(2)} m/s`;
+ el('warning').textContent=s.config==='O'&&Math.abs(s.a-s.b)<1e-6?'TEKİL O GEOMETRİSİ: yaw motorlarla kontrol edilemez; burada Wz=0 seçildi.':s.residual>1e-6?'Bu teker komutları kaymasız modelle uyumsuz: gösterilen hareket en küçük kareler yaklaşımıdır.':'';
+}
+function preset(v){['vx','vy','wz'].forEach((id,i)=>el(id).value=v[i])}
+document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>preset({forward:[.5,0,0],strafe:[0,.5,0],rotate:[0,0,1]}[b.dataset.preset]));
+el('stop').onclick=()=>preset([0,0,0]);el('pause').onclick=()=>{paused=!paused;el('pause').textContent=paused?'Devam et':'Duraklat'};el('reset').onclick=()=>{pose=[0,0,0];trail=[];phases=[0,0,0,0]};
+function frame(t){let dt=last===null?0:Math.min((t-last)/1000,.04);last=t;draw(dt);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+window.mecanumTest={matrix,solve,mul,state};
+</script></html>

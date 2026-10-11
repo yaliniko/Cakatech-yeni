@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
+import { revalidateHooks } from '@/hooks/revalidateSite'
 import { orderingFields } from '@/fields'
 
 // Django sponsors.Sponsor.Tier ile aynı değerler.
@@ -18,12 +19,13 @@ export const Sponsors: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'tier', 'isActive'],
-    group: 'Sponsorluk',
+    group: 'İçerik',
   },
   defaultSort: 'order',
   access: { read: activeOrLoggedIn, create: loggedIn, update: loggedIn, delete: loggedIn },
+  hooks: revalidateHooks,
   fields: [
-    { name: 'name', label: 'Sponsor adı', type: 'text', required: true },
+    { name: 'name', label: 'Ad', type: 'text', required: true },
     {
       type: 'row',
       fields: [
@@ -38,13 +40,7 @@ export const Sponsors: CollectionConfig = {
         { name: 'url', label: 'Web sitesi', type: 'text' },
       ],
     },
-    {
-      name: 'logo',
-      label: 'Logo',
-      type: 'upload',
-      relationTo: 'media',
-      admin: { description: 'Mümkünse şeffaf arka planlı PNG veya SVG.' },
-    },
+    { name: 'logo', label: 'Logo', type: 'upload', relationTo: 'media' },
     { name: 'description', label: 'Açıklama', type: 'textarea', localized: true },
     ...orderingFields,
   ],

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
+import { revalidateHooks } from '@/hooks/revalidateSite'
 import { orderingFields } from '@/fields'
 
 export const Competitions: CollectionConfig = {
@@ -8,17 +9,18 @@ export const Competitions: CollectionConfig = {
   labels: { singular: 'Yarışma', plural: 'Yarışmalar' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'season', 'date', 'result', 'isActive'],
-    group: 'Takım',
+    defaultColumns: ['name', 'season', 'result'],
+    group: 'İçerik',
   },
   defaultSort: '-date',
   access: { read: activeOrLoggedIn, create: loggedIn, update: loggedIn, delete: loggedIn },
+  hooks: revalidateHooks,
   fields: [
-    { name: 'name', label: 'Yarışma adı', type: 'text', required: true, localized: true },
+    { name: 'name', label: 'Ad', type: 'text', required: true, localized: true },
     {
       type: 'row',
       fields: [
-        { name: 'season', label: 'Sezon', type: 'text', admin: { description: 'Örn. 2025-26' } },
+        { name: 'season', label: 'Sezon', type: 'text', admin: { placeholder: '2025-26' } },
         {
           name: 'date',
           label: 'Tarih',
@@ -33,10 +35,10 @@ export const Competitions: CollectionConfig = {
         { name: 'location', label: 'Yer', type: 'text', localized: true },
         {
           name: 'result',
-          label: 'Sonuç / derece',
+          label: 'Sonuç',
           type: 'text',
           localized: true,
-          admin: { description: 'Örn. Bölge 3.lüğü, Finalist' },
+          admin: { placeholder: 'Finalist' },
         },
       ],
     },

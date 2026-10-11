@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, loggedIn } from '@/access'
+import { revalidateHooks } from '@/hooks/revalidateSite'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -12,16 +13,14 @@ export const Media: CollectionConfig = {
     update: loggedIn,
     delete: loggedIn,
   },
+  hooks: revalidateHooks,
   fields: [
     {
       name: 'alt',
-      label: 'Açıklama (alt metin)',
+      label: 'Alt metin',
       type: 'text',
       required: true,
       localized: true,
-      admin: {
-        description: 'Görme engelliler ve arama motorları için görselde ne olduğunu yaz.',
-      },
     },
   ],
   upload: {

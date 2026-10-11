@@ -12,7 +12,20 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      { pathname: '/logo.jpg' },
     ],
+    // Vercel Blob'a doğrudan bağlanan görseller için.
+    remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
+  },
+  // Uygulama dosyaları doğrudan açılsa bile ayrı (opak) bir kökende çalışsın:
+  // site çerezlerine, panele ve sayfanın geri kalanına erişemezler.
+  async headers() {
+    return [
+      {
+        source: '/uygulamalar/:path*',
+        headers: [{ key: 'Content-Security-Policy', value: 'sandbox allow-scripts allow-popups' }],
+      },
+    ]
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

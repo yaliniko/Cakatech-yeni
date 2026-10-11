@@ -28,8 +28,3 @@ export const activeOrLoggedIn: Access = ({ req: { user } }) => {
   return { isActive: { equals: true } } satisfies Where
 }
 
-// Taslak destekli koleksiyonlar: ziyaretçi yalnızca yayınlanmışları görür.
-export const publishedOrLoggedIn: Access = ({ req: { user } }) => {
-  if (user) return true
-  return { _status: { equals: 'published' } } satisfies Where
-}

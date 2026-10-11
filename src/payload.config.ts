@@ -12,9 +12,7 @@ import { Awards } from './collections/Awards'
 import { Competitions } from './collections/Competitions'
 import { Media } from './collections/Media'
 import { Members } from './collections/Members'
-import { Posts } from './collections/Posts'
 import { Resources } from './collections/Resources'
-import { Robots } from './collections/Robots'
 import { Sponsors } from './collections/Sponsors'
 import { SponsorshipInquiries } from './collections/SponsorshipInquiries'
 import { Users } from './collections/Users'
@@ -25,19 +23,19 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
-    meta: { titleSuffix: ' · Çakatech Panel' },
+    // Sade, tek tema: sitenin siyah zemini (renkler: (payload)/custom.scss).
+    theme: 'dark',
+    meta: { titleSuffix: ' · Çakatech', icons: [{ rel: 'icon', url: '/logo.jpg' }] },
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
   collections: [
     Members,
-    Robots,
     Competitions,
     Awards,
     Sponsors,
     SponsorshipInquiries,
-    Posts,
     Resources,
     Media,
     Users,

@@ -7,10 +7,10 @@ import { isReadField } from '@/fields'
 // Ziyaretçi API'den doğrudan yazamaz; kayıt sitedeki form üzerinden (sunucu tarafında) oluşturulur.
 export const SponsorshipInquiries: CollectionConfig = {
   slug: 'sponsorship-inquiries',
-  labels: { singular: 'Sponsorluk Başvurusu', plural: 'Sponsorluk Başvuruları' },
+  labels: { singular: 'Başvuru', plural: 'Başvurular' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'organization', 'email', 'isRead', 'createdAt'],
+    defaultColumns: ['name', 'email', 'isRead', 'createdAt'],
     group: 'Gelen Kutusu',
   },
   defaultSort: '-createdAt',
@@ -25,7 +25,7 @@ export const SponsorshipInquiries: CollectionConfig = {
       type: 'row',
       fields: [
         { name: 'name', label: 'Ad soyad', type: 'text', required: true, admin: { readOnly: true } },
-        { name: 'organization', label: 'Kurum / firma', type: 'text', admin: { readOnly: true } },
+        { name: 'organization', label: 'Kurum', type: 'text', admin: { readOnly: true } },
       ],
     },
     {
