@@ -31,6 +31,26 @@ export const APPS: AppEntry[] = [
       en: 'Computes HIVE shots from flywheel RPM and angle.',
     },
   },
+  {
+    slug: 'intake-laboratuvari',
+    file: '/uygulamalar/intake-laboratuvari.html',
+    tag: { tr: 'Intake', en: 'Intake' },
+    title: { tr: 'FTC Intake Laboratuvarı', en: 'FTC Intake Lab' },
+    summary: {
+      tr: 'Üst rulo ve zemin arasında topun sıkışmasını, kavramayı ve rulo torkunu hesaplar.',
+      en: 'Computes ball compression, grip and roller torque between the top roller and the floor.',
+    },
+  },
+  {
+    slug: 'apriltag-nisan-laboratuvari',
+    file: '/uygulamalar/apriltag-nisan-laboratuvari.html',
+    tag: { tr: 'Görüntü işleme', en: 'Vision' },
+    title: { tr: 'AprilTag ile Nişan Alma Laboratuvarı', en: 'AprilTag Aiming Lab' },
+    summary: {
+      tr: 'Kamera ölçümünden shooter yönünü ve hedefteki yanal hatayı gösterir.',
+      en: 'Shows shooter heading and lateral error at the target from camera measurements.',
+    },
+  },
 ]
 
 export const getApp = (slug: string) => APPS.find((app) => app.slug === slug) ?? null
