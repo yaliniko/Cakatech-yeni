@@ -21,8 +21,8 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       <Hazard className="h-2" />
       <Container className="flex flex-col gap-10 py-16 md:flex-row md:items-center md:justify-between">
         <Link href={href('/')} className="inline-flex items-center gap-4">
-          <span className="relative size-14 overflow-hidden rounded-full ring-1 ring-line">
-            <Image src="/logo.jpg" alt="" fill sizes="56px" />
+          <span className="relative size-14 overflow-hidden rounded-md ring-1 ring-line">
+            <Image src="/logo_yeni.jpg" alt="" fill sizes="56px" />
           </span>
           <span className="flex flex-col">
             <span className="display text-2xl normal-case">

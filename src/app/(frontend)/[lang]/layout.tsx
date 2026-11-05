@@ -50,9 +50,9 @@ export async function generateMetadata({ params }: LayoutProps<'/[lang]'>): Prom
       type: 'website',
       siteName: 'Çakatech #25160',
       locale: lang === 'tr' ? 'tr_TR' : 'en_GB',
-      images: ['/logo.jpg'],
+      images: ['/logo_yeni.jpg'],
     },
-    icons: { icon: '/logo.jpg' },
+    icons: { icon: '/logo_yeni.jpg' },
   }
 }
 

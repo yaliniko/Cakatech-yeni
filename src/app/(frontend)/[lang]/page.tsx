@@ -34,17 +34,11 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
   return (
     <>
       {/* HERO */}
-      <section className="relative isolate overflow-hidden border-b border-line">
+      <section className="relative isolate flex flex-col overflow-hidden border-b border-line lg:min-h-svh">
         <div aria-hidden className="grid-paper absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_70%_40%,black_20%,transparent_75%)]" />
         <div aria-hidden className="absolute -top-60 -left-40 -z-10 size-[44rem] rounded-full bg-brand/15 blur-[120px]" />
-        <p
-          aria-hidden
-          className="display outline-text pointer-events-none absolute -bottom-[0.18em] left-1/2 -z-10 -translate-x-1/2 text-[clamp(8rem,30vw,28rem)] leading-none whitespace-nowrap select-none"
-        >
-          25160
-        </p>
 
-        <Container className="flex flex-col justify-center pt-32 pb-24 sm:pt-40 lg:min-h-svh lg:pb-32">
+        <Container className="flex flex-1 flex-col justify-center pt-32 pb-12 sm:pt-40 lg:pb-16">
           <div className="stagger max-w-4xl">
             <p className="label flex items-center gap-3 text-accent">
               <span aria-hidden className="hazard h-3 w-10" />
@@ -63,6 +57,13 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
             </div>
           </div>
         </Container>
+
+        <p
+          aria-hidden
+          className="display outline-text pointer-events-none -mb-[0.18em] text-center text-[clamp(6rem,24vw,22rem)] leading-none whitespace-nowrap select-none"
+        >
+          25160
+        </p>
       </section>
 
       {/* SAYILAR */}
@@ -126,7 +127,7 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
       {/* ÇAĞRI */}
       <section className="pt-24">
         <Container>
-          <div className="relative overflow-hidden bg-brand">
+          <div className="relative overflow-hidden bg-brand text-ink">
             <Hazard className="h-3" />
             <div aria-hidden className="grid-paper absolute inset-0 opacity-40" />
             <div className="relative flex flex-col gap-8 px-8 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-14">

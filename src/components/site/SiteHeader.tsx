@@ -57,8 +57,8 @@ export function SiteHeader({ lang, homeHref, items, cta, labels }: Props) {
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-5 sm:px-8">
         <Link href={homeHref} className="group flex items-center gap-3" aria-label="Çakatech #25160">
-          <span className="relative size-10 overflow-hidden rounded-full ring-1 ring-line transition group-hover:ring-accent">
-            <Image src="/logo.jpg" alt="" fill sizes="40px" priority />
+          <span className="relative size-10 overflow-hidden rounded-md ring-1 ring-line transition group-hover:ring-accent">
+            <Image src="/logo_yeni.jpg" alt="" fill sizes="40px" priority />
           </span>
           <span className="flex flex-col leading-none">
             <span className="display text-[1.05rem] tracking-tight normal-case">

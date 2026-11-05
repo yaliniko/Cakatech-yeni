@@ -55,7 +55,7 @@ export function InquiryForm({ t }: { t: Dictionary['form'] }) {
             →
           </span>
         </button>
-        <p aria-live="polite" className="text-sm text-brand-hi">
+        <p aria-live="polite" className="text-sm text-red-400">
           {state.status === 'invalid' && t.errorRequired}
           {state.status === 'error' && t.errorServer}
         </p>

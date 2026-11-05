@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
         pathname: '/api/media/file/**',
       },
       { pathname: '/logo.jpg' },
+      { pathname: '/logo_yeni.jpg' },
     ],
     // Vercel Blob'a doğrudan bağlanan görseller için.
     remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],

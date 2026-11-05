@@ -25,7 +25,7 @@ export default buildConfig({
     user: Users.slug,
     // Sade, tek tema: sitenin siyah zemini (renkler: (payload)/custom.scss).
     theme: 'dark',
-    meta: { titleSuffix: ' · Çakatech', icons: [{ rel: 'icon', url: '/logo.jpg' }] },
+    meta: { titleSuffix: ' · Çakatech', icons: [{ rel: 'icon', url: '/logo_yeni.jpg' }] },
     importMap: {
       baseDir: path.resolve(dirname),
     },

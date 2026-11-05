@@ -77,7 +77,7 @@ export default async function CompetitionsPage({ params }: PageProps<'/[lang]/co
                               {c.name}
                             </h3>
                             {c.result && (
-                              <p className="mt-4 inline-flex items-center gap-3 bg-brand px-3 py-1.5">
+                              <p className="mt-4 inline-flex items-center gap-3 bg-brand px-3 py-1.5 text-ink">
                                 <span className="font-display font-bold">{c.result}</span>
                               </p>
                             )}

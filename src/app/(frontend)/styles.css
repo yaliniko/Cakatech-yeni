@@ -2,24 +2,24 @@
 
 /*
  * Çakatech tasarım dili: "saha + teknik çizim".
- * Palet eski Django sitesinden korunur: siyah zemin, kırmızı, sarı, beyaz.
- * Motifler: FTC sahası karoları, sarı-siyah tehlike şeridi, çizim köşe işaretleri, mono etiketler.
+ * Palet yeni logodan (logo_yeni.jpg) gelir: lacivert zemin, sarı vurgu, beyaz metin.
+ * Motifler: FTC sahası karoları, sarı-lacivert tehlike şeridi, çizim köşe işaretleri, mono etiketler.
  * Tailwind sınıfları olarak kullanılır: bg-ink, text-brand, border-line, font-display, font-mono ...
  */
 @theme {
-  --color-ink: #070707;
-  --color-ink-2: #0e0e0e;
-  --color-ink-3: #171717;
+  --color-ink: #0b1a39;
+  --color-ink-2: #0f2147;
+  --color-ink-3: #152a56;
   --color-line: rgb(255 255 255 / 0.1);
   --color-line-strong: rgb(255 255 255 / 0.2);
 
   --color-paper: #f4f2ee;
-  --color-muted: #9b9a97;
+  --color-muted: #9aa6bf;
 
-  --color-brand: #e2231a;
-  --color-brand-hi: #ff4a41;
-  --color-accent: #ffd200;
-  --color-accent-hi: #ffe14d;
+  --color-brand: #ffb800;
+  --color-brand-hi: #ffc933;
+  --color-accent: #fdd825;
+  --color-accent-hi: #ffe45c;
 
   --font-sans: var(--nf-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--nf-display), ui-sans-serif, system-ui, sans-serif;
@@ -89,7 +89,7 @@
 
   .outline-text {
     color: transparent;
-    -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.14);
+    -webkit-text-stroke: 2px rgb(253 216 37 / 0.5);
   }
 
   /* Sarı-siyah saha bandı */
@@ -159,7 +159,7 @@
     @apply bg-accent text-ink hover:bg-accent-hi;
   }
   .btn-brand {
-    @apply bg-brand text-paper hover:bg-brand-hi;
+    @apply bg-brand text-ink hover:bg-brand-hi;
   }
   .btn-ghost {
     @apply bg-white/[0.06] text-paper hover:bg-white/[0.12];
