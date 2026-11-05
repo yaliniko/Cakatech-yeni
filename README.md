@@ -1,6 +1,6 @@
 # Çakatech #25160 — Takım Sitesi
 
-FTC robotik takımı Çakatech'in sitesi ve içerik yönetim paneli.
+FTC robotik takımı Çakatech'in sitesi 
 
 **Stack:** Next.js 16 · Payload CMS 3 · SQLite (yerelde dosya, yayında Turso) · Tailwind CSS 4 · TypeScript
 **Yayın:** Vercel (ücretsiz) + Turso veritabanı (ücretsiz) + Vercel Blob görsel deposu (ücretsiz)
