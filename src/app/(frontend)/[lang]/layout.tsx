@@ -30,9 +30,9 @@ const mono = JetBrains_Mono({
   display: 'swap',
 })
 
-// İçerik panelden değişince sayfalar anında yenilenir (bkz. hooks/revalidateSite);
-// bu süre yalnızca güvenlik ağı.
-export const revalidate = 600
+// Sayfalar her ziyarette veritabanından taze okunur; panelde yapılan değişiklik
+// önbellek beklemeden siteye yansır.
+export const dynamic = 'force-dynamic'
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }))
