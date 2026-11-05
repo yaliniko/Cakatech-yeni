@@ -57,3 +57,13 @@ node_modules/
 /data
 cakatech.db.bak
 input/
+
+# Diğer ortam dosyaları (örnek dosya hariç)
+.env.*
+!.env.example
+
+# Veritabanı yedekleri
+*.db.bak
+
+# Editör / araç klasörleri
+/.claude/
