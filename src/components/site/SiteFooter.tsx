@@ -55,9 +55,6 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <p>
             © {new Date().getFullYear()} Çakatech · {dict.footer.disclaimer}
           </p>
-          <a href="/admin" className="label shrink-0 text-[0.65rem] transition hover:text-paper">
-            {dict.footer.panel} ↗
-          </a>
         </Container>
       </div>
     </footer>
