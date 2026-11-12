@@ -24,7 +24,25 @@ export default async function ResourcesPage({ params }: PageProps<'/[lang]/resou
   const { lang } = await params
   if (!hasLocale(lang)) notFound()
   const dict = getDictionary(lang)
-  const resources = await getResources(lang)
+  const fetched = await getResources(lang)
+
+  // Sabit olarak eklenen kaynak: FTC Scout
+  const ftcScout = {
+    id: 'ftc-scout',
+    type: 'other' as const,
+    title: 'FTC Scout',
+    description:
+      lang === 'tr'
+        ? 'FTC takımları, etkinlikler ve maç sonuçları için istatistik platformu.'
+        : 'Stats platform for FTC teams, events and match results.',
+    url: 'https://ftcscout.org/',
+    image: null,
+  }
+
+  // CMS'ten zaten eklendiyse tekrar gösterme
+  const resources = fetched.some((r) => r.url.replace(/\/$/, '') === 'https://ftcscout.org')
+    ? fetched
+    : [...fetched, ftcScout as (typeof fetched)[number]]
 
   const groups = TYPE_ORDER.map((type) => ({
     type,
@@ -75,7 +93,7 @@ export default async function ResourcesPage({ params }: PageProps<'/[lang]/resou
                             <span className="mt-1 block text-sm leading-relaxed text-muted">{r.description}</span>
                           )}
                         </span>
-                        <span className="label flex items-center gap-2 text-paper/70 transition group-hover:text-accent">
+                        <span className="label flex items-center gap-2 text-paper/70 transition hover:text-accent">
                           <span aria-hidden>↗</span>
                         </span>
                       </a>
