@@ -31,7 +31,7 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             <span className="label mt-1 text-[0.62rem] text-accent">FTC #25160</span>
           </span>
         </Link>
-        
+
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
           <nav aria-label="Alt menü">
             <ul className="flex flex-wrap gap-x-6 gap-y-3">
@@ -44,7 +44,7 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
               ))}
             </ul>
           </nav>
-          
+
           {/* Dikkat Çekici Büyük Instagram Bağlantısı */}
           <a
             href="https://www.instagram.com/25160_cakatech/"
@@ -78,10 +78,32 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       </div>
 
       <div className="border-t border-line">
-        <Container className="flex flex-col gap-3 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <Container className="flex flex-col gap-4 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} Çakatech · {dict.footer.disclaimer}
           </p>
+
+          <a
+            href="https://cakatech-duzenleyici.oguzhancoach.workers.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex w-fit items-center gap-2 rounded-full border border-line bg-ink px-4 py-2 text-paper transition hover:border-brand hover:text-accent"
+          >
+            <svg
+              className="size-4 transition-transform group-hover:scale-110"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            <span className="label text-xs tracking-wider uppercase">Düzenleyici</span>
+          </a>
         </Container>
       </div>
     </footer>
