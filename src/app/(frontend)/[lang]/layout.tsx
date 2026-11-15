@@ -31,7 +31,8 @@ const mono = JetBrains_Mono({
 })
 
 // Sayfalar her ziyarette veritabanından taze okunur; panelde yapılan değişiklik
-// önbellek beklemeden siteye yansır.
+// önbellek beklemeden siteye yansır. (Önbellekli yayına dönmek için bu satırı kaldır;
+// panel kancaları hooks/revalidateSite.ts sayfaları yine de yeniler.)
 export const dynamic = 'force-dynamic'
 
 export function generateStaticParams() {

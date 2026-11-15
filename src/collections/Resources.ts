@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
 import { revalidateHooks } from '@/hooks/revalidateSite'
-import { orderingFields } from '@/fields'
+import { httpUrl, orderingFields } from '@/fields'
 
 // Kaynaklar sayfası: açık kaynak kod, CAD, portfolyo, video bağlantıları.
 export const Resources: CollectionConfig = {
@@ -34,7 +34,7 @@ export const Resources: CollectionConfig = {
             { label: 'Diğer', value: 'other' },
           ],
         },
-        { name: 'url', label: 'Bağlantı', type: 'text', required: true },
+        { name: 'url', label: 'Bağlantı', type: 'text', required: true, validate: httpUrl },
       ],
     },
     { name: 'description', label: 'Açıklama', type: 'textarea', localized: true },

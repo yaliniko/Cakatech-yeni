@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
 import { revalidateHooks } from '@/hooks/revalidateSite'
-import { orderingFields } from '@/fields'
+import { httpUrl, orderingFields } from '@/fields'
 
 // Django team.Member.SubTeam ile aynı değerler (veri taşımada birebir eşleşsin).
 export const SUBTEAMS = [
@@ -40,8 +40,8 @@ export const Members: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'instagramUrl', label: 'Instagram', type: 'text' },
-        { name: 'linkedinUrl', label: 'LinkedIn', type: 'text' },
+        { name: 'instagramUrl', label: 'Instagram', type: 'text', validate: httpUrl },
+        { name: 'linkedinUrl', label: 'LinkedIn', type: 'text', validate: httpUrl },
       ],
     },
     ...orderingFields,

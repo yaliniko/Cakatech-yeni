@@ -1,6 +1,8 @@
 import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
+// Not: (frontend) layout'u şu an `force-dynamic` olduğundan sayfalar zaten her ziyarette taze okunuyor;
+// bu kancalar o ayar kaldırılırsa (önbellekli yayına dönülürse) devreye girer ve zararsızdır.
 // Panelde içerik değişince sitenin önbelleğe alınmış sayfalarını yeniler.
 // Next dışında (ör. `payload migrate` CLI) çağrılırsa revalidatePath hata verir; yok sayılır.
 const revalidate = (context: Record<string, unknown>) => {

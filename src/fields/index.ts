@@ -1,4 +1,4 @@
-import type { Field } from 'payload'
+import type { Field, TextFieldSingleValidation } from 'payload'
 
 // Django'daki OrderedModel karşılığı: manuel sıralama + yayında mı bayrağı (yan panelde).
 export const orderingFields: Field[] = [
@@ -28,4 +28,18 @@ export const isReadField: Field = {
   defaultValue: false,
   index: true,
   admin: { position: 'sidebar' },
+}
+
+// Bağlantı alanları: boş olabilir (zorunluluğu `required` belirler), doluysa http(s):// ile başlamalı.
+// Böylece "instagram.com/x" gibi eksik yazılan adresler sitede kırık göreli bağlantıya dönüşmez.
+export const httpUrl: TextFieldSingleValidation = (value, { required }) => {
+  const text = typeof value === 'string' ? value.trim() : ''
+  if (!text) return required ? 'Bu alan gerekli.' : true
+  try {
+    const { protocol } = new URL(text)
+    if (protocol === 'http:' || protocol === 'https:') return true
+  } catch {
+    // aşağıdaki mesaja düş
+  }
+  return 'Geçerli bir adres girin (https://… ile başlamalı).'
 }

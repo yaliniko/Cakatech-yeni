@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { activeOrLoggedIn, loggedIn } from '@/access'
 import { revalidateHooks } from '@/hooks/revalidateSite'
-import { orderingFields } from '@/fields'
+import { httpUrl, orderingFields } from '@/fields'
 
 // Django sponsors.Sponsor.Tier ile aynı değerler.
 export const SPONSOR_TIERS = [
@@ -37,7 +37,7 @@ export const Sponsors: CollectionConfig = {
           defaultValue: 'partner',
           options: SPONSOR_TIERS,
         },
-        { name: 'url', label: 'Web sitesi', type: 'text' },
+        { name: 'url', label: 'Web sitesi', type: 'text', validate: httpUrl },
       ],
     },
     { name: 'logo', label: 'Logo', type: 'upload', relationTo: 'media' },
