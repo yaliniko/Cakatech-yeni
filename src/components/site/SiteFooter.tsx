@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { type Locale, localizePath } from '@/i18n/config'
 import type { Dictionary } from '@/i18n/dictionaries'
+import { contactEmail } from '@/lib/site'
 
 import { Container, Hazard } from './ui'
 
@@ -77,6 +78,18 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <p className="display outline-text -mb-[0.2em] text-center text-[clamp(5rem,22vw,20rem)] leading-none">
           25160
         </p>
+      </div>
+
+      <div className="relative border-t border-line bg-ink-2">
+        <Container className="py-12 sm:py-16">
+          <p className="label text-accent">{dict.footer.writeUs}</p>
+          <a
+            href={`mailto:${contactEmail}`}
+            className="display mt-4 block text-[clamp(1.5rem,5.2vw,4.5rem)] leading-tight normal-case break-all transition hover:text-accent"
+          >
+            {contactEmail} <span aria-hidden>↗</span>
+          </a>
+        </Container>
       </div>
 
       <div className="border-t border-line">

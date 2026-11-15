@@ -76,6 +76,7 @@ const tr = {
   footer: {
     disclaimer: 'FIRST® ve FIRST® Tech Challenge, FIRST®’ün tescilli markalarıdır.',
     panel: 'Panel',
+    writeUs: 'Bize yazın',
   },
   notFound: {
     title: 'Sayfa bulunamadı',
@@ -170,6 +171,7 @@ const en: Dictionary = {
   footer: {
     disclaimer: 'FIRST® and FIRST® Tech Challenge are registered trademarks of FIRST®.',
     panel: 'Panel',
+    writeUs: 'Write to us',
   },
   notFound: {
     title: 'Page not found',
