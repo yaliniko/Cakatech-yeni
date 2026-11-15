@@ -1,6 +1,7 @@
 'use client'
 
-import { useActionState } from 'react'
+import Script from 'next/script'
+import { useActionState, useEffect, useRef } from 'react'
 
 import type { Dictionary } from '@/i18n/dictionaries'
 
@@ -8,8 +9,40 @@ import { type InquiryState, submitInquiry } from './actions'
 
 const initial: InquiryState = { status: 'idle' }
 
-export function InquiryForm({ t }: { t: Dictionary['form'] }) {
+type TurnstileApi = {
+  render: (el: HTMLElement, options: { sitekey: string; theme?: string }) => string
+  reset: (id: string) => void
+  remove: (id: string) => void
+}
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi
+  }
+}
+
+export function InquiryForm({ t, turnstileSiteKey }: { t: Dictionary['form']; turnstileSiteKey?: string }) {
   const [state, action, pending] = useActionState(submitInquiry, initial)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const widgetId = useRef<string | null>(null)
+
+  // Turnstile (anahtar tanımlıysa): script yüklenince kutuya çizilir; sayfadan ayrılınca kaldırılır.
+  const renderWidget = () => {
+    if (!turnstileSiteKey || !boxRef.current || widgetId.current || !window.turnstile) return
+    widgetId.current = window.turnstile.render(boxRef.current, { sitekey: turnstileSiteKey, theme: 'dark' })
+  }
+  useEffect(() => {
+    renderWidget()
+    return () => {
+      if (widgetId.current) window.turnstile?.remove(widgetId.current)
+      widgetId.current = null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [turnstileSiteKey])
+
+  // Her gönderimden sonra jeton tek kullanımlık olduğu için yenilenir.
+  useEffect(() => {
+    if (state.status !== 'idle' && widgetId.current) window.turnstile?.reset(widgetId.current)
+  }, [state])
 
   if (state.status === 'success') {
     return (
@@ -48,6 +81,17 @@ export function InquiryForm({ t }: { t: Dictionary['form'] }) {
         </label>
       </div>
 
+      {turnstileSiteKey && (
+        <>
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+            strategy="afterInteractive"
+            onReady={renderWidget}
+          />
+          <div ref={boxRef} className="sm:col-span-2" />
+        </>
+      )}
+
       <div className="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
         <button type="submit" disabled={pending} className="btn btn-accent disabled:opacity-60">
           {pending ? t.sending : t.submit}
@@ -58,6 +102,8 @@ export function InquiryForm({ t }: { t: Dictionary['form'] }) {
         <p aria-live="polite" className="text-sm text-red-400">
           {state.status === 'invalid' && t.errorRequired}
           {state.status === 'error' && t.errorServer}
+          {state.status === 'captcha' && t.errorCaptcha}
+          {state.status === 'limited' && t.errorLimit}
         </p>
       </div>
     </form>

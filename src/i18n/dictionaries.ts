@@ -72,6 +72,8 @@ const tr = {
     errorRequired: 'Ad, e-posta ve mesaj gerekli.',
     errorServer: 'Bir sorun oluştu, tekrar deneyin.',
     orMail: 'Ya da doğrudan e-posta gönderin:',
+    errorCaptcha: 'Doğrulama başarısız, sayfayı yenileyip tekrar deneyin.',
+    errorLimit: 'Çok fazla deneme yapıldı, lütfen biraz sonra tekrar deneyin.',
   },
   footer: {
     disclaimer: 'FIRST® ve FIRST® Tech Challenge, FIRST®’ün tescilli markalarıdır.',
@@ -167,6 +169,8 @@ const en: Dictionary = {
     errorRequired: 'Name, email and message are required.',
     errorServer: 'Something went wrong, please try again.',
     orMail: 'Or email us directly:',
+    errorCaptcha: 'Verification failed, please reload the page and try again.',
+    errorLimit: 'Too many attempts, please try again later.',
   },
   footer: {
     disclaimer: 'FIRST® and FIRST® Tech Challenge are registered trademarks of FIRST®.',

@@ -1,9 +1,12 @@
 'use server'
 
+import { headers } from 'next/headers'
+
 import { getPayloadClient } from '@/lib/data'
+import { isFlooded, verifyTurnstile } from '@/lib/inquiryGuard'
 import { contactEmail } from '@/lib/site'
 
-export type InquiryState = { status: 'idle' | 'success' | 'invalid' | 'error' }
+export type InquiryState = { status: 'idle' | 'success' | 'invalid' | 'error' | 'captcha' | 'limited' }
 
 const text = (data: FormData, key: string, max: number) =>
   String(data.get(key) ?? '')
@@ -27,8 +30,12 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
 
   if (!data.name || !EMAIL.test(data.email) || data.message.length < 5) return { status: 'invalid' }
 
+  const ip = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || undefined
+  if (!(await verifyTurnstile(text(formData, 'cf-turnstile-response', 4096), ip))) return { status: 'captcha' }
+
   try {
     const payload = await getPayloadClient()
+    if (await isFlooded(payload, data.email)) return { status: 'limited' }
     await payload.create({ collection: 'sponsorship-inquiries', data, overrideAccess: true })
   } catch (error) {
     console.error('Sponsorluk başvurusu kaydedilemedi', error)

@@ -76,7 +76,7 @@ export default async function SponsorsPage({ params }: PageProps<'/[lang]/sponso
         <Container className="max-w-3xl">
           <h2 className="display text-[clamp(2.2rem,4.5vw,3.8rem)]">{dict.form.title}</h2>
           <div className="mt-10">
-            <InquiryForm t={dict.form} />
+            <InquiryForm t={dict.form} turnstileSiteKey={process.env.TURNSTILE_SITE_KEY} />
           </div>
           <p className="mt-8 text-sm text-muted">
             {dict.form.orMail}{' '}
