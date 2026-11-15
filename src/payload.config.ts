@@ -1,4 +1,5 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { en } from '@payloadcms/translations/languages/en'
@@ -54,6 +55,14 @@ export default buildConfig({
     defaultLocale: 'tr',
     fallback: true,
   },
+  // E-posta (başvuru bildirimi): RESEND_API_KEY yoksa Payload yalnızca konsola yazar, mail gitmez.
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'onboarding@resend.dev',
+        defaultFromName: 'Çakatech Web',
+        apiKey: process.env.RESEND_API_KEY,
+      })
+    : undefined,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

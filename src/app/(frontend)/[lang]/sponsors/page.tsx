@@ -7,7 +7,7 @@ import { SPONSOR_TIERS } from '@/collections/Sponsors'
 import { hasLocale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/dictionaries'
 import { getSponsors } from '@/lib/data'
-import { alternatesFor } from '@/lib/site'
+import { alternatesFor, contactEmail } from '@/lib/site'
 
 import { InquiryForm } from './InquiryForm'
 
@@ -78,6 +78,12 @@ export default async function SponsorsPage({ params }: PageProps<'/[lang]/sponso
           <div className="mt-10">
             <InquiryForm t={dict.form} />
           </div>
+          <p className="mt-8 text-sm text-muted">
+            {dict.form.orMail}{' '}
+            <a href={`mailto:${contactEmail}`} className="text-paper underline underline-offset-4 transition hover:text-accent">
+              {contactEmail}
+            </a>
+          </p>
         </Container>
       </section>
     </>

@@ -1,6 +1,7 @@
 'use server'
 
 import { getPayloadClient } from '@/lib/data'
+import { contactEmail } from '@/lib/site'
 
 export type InquiryState = { status: 'idle' | 'success' | 'invalid' | 'error' }
 
@@ -29,9 +30,34 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
   try {
     const payload = await getPayloadClient()
     await payload.create({ collection: 'sponsorship-inquiries', data, overrideAccess: true })
-    return { status: 'success' }
   } catch (error) {
     console.error('Sponsorluk başvurusu kaydedilemedi', error)
     return { status: 'error' }
   }
+
+  // Bildirim maili: başvuru zaten kaydedildi, mail gitmezse ziyaretçiye hata gösterilmez.
+  // Düz metin gönderilir (ziyaretçi girdisi HTML olarak yorumlanmasın); yanıtla → ziyaretçiye gider.
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const payload = await getPayloadClient()
+      const oneLine = (value: string) => value.replace(/[\r\n]+/g, ' ')
+      await payload.sendEmail({
+        to: contactEmail,
+        replyTo: data.email,
+        subject: `Yeni sponsorluk başvurusu: ${oneLine(data.name)}`,
+        text: [
+          `Ad soyad: ${data.name}`,
+          `Kurum: ${data.organization ?? '-'}`,
+          `E-posta: ${data.email}`,
+          `Telefon: ${data.phone ?? '-'}`,
+          '',
+          data.message,
+        ].join('\n'),
+      })
+    } catch (error) {
+      console.error('Başvuru bildirim maili gönderilemedi', error)
+    }
+  }
+
+  return { status: 'success' }
 }

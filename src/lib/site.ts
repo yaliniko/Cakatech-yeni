@@ -12,3 +12,6 @@ export const alternatesFor = (lang: Locale, path: string) => ({
   canonical: localizePath(lang, path),
   languages: Object.fromEntries(locales.map((l) => [l, localizePath(l, path)])),
 })
+
+// Sponsorluk ve genel iletişim adresi (sponsor sayfasındaki mailto bağlantısı ve başvuru bildirimleri).
+export const contactEmail = process.env.INQUIRY_NOTIFY_TO || 'cakatechftc@gmail.com'

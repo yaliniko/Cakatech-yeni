@@ -46,7 +46,6 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           </nav>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Instagram */}
             <a
               href="https://www.instagram.com/25160_cakatech/"
               target="_blank"
@@ -69,31 +68,6 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
               </svg>
               <span className="label text-xs tracking-wider uppercase">Instagram</span>
-            </a>
-
-            {/* FTC Scout */}
-            <a
-              href="https://ftcscout.org/teams/25160"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="FTC Scout"
-              className="group inline-flex items-center gap-3 rounded-full border border-line bg-ink px-4 py-2 text-paper transition hover:border-brand hover:text-accent"
-            >
-              <svg
-                className="size-5 transition-transform group-hover:scale-110"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                viewBox="0 0 24 24"
-                aria-hidden
-              >
-                <line x1="18" x2="18" y1="20" y2="10" />
-                <line x1="12" x2="12" y1="20" y2="4" />
-                <line x1="6" x2="6" y1="20" y2="14" />
-              </svg>
-              <span className="label text-xs tracking-wider uppercase">FTC Scout</span>
             </a>
           </div>
         </div>
@@ -130,7 +104,7 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
               <path d="M12 20h9" />
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
             </svg>
-            <span className="label text-xs tracking-wider uppercase">Notion</span>
+            <span className="label text-xs tracking-wider uppercase">Cakatech Work Place</span>
           </a>
         </Container>
       </div>

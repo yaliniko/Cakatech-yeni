@@ -71,6 +71,7 @@ const tr = {
     success: 'Teşekkürler, size döneceğiz.',
     errorRequired: 'Ad, e-posta ve mesaj gerekli.',
     errorServer: 'Bir sorun oluştu, tekrar deneyin.',
+    orMail: 'Ya da doğrudan e-posta gönderin:',
   },
   footer: {
     disclaimer: 'FIRST® ve FIRST® Tech Challenge, FIRST®’ün tescilli markalarıdır.',
@@ -164,6 +165,7 @@ const en: Dictionary = {
     success: 'Thank you, we will get back to you.',
     errorRequired: 'Name, email and message are required.',
     errorServer: 'Something went wrong, please try again.',
+    orMail: 'Or email us directly:',
   },
   footer: {
     disclaimer: 'FIRST® and FIRST® Tech Challenge are registered trademarks of FIRST®.',

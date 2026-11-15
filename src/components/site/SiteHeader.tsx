@@ -17,6 +17,9 @@ type Props = {
   labels: { menu: string; close: string; language: string }
 }
 
+// Menüdeki dış bağlantı (yeni sekmede açılır).
+const FTC_SCOUT_URL = 'https://ftcscout.org/teams/25160'
+
 // Tarayıcıdaki yol: tr → /team, en → /en/team. Dil değiştirici aynı sayfanın diğer dildeki adresine gider.
 const switchLocalePath = (pathname: string, to: Locale) => {
   const bare = pathname === '/en' ? '/' : pathname.startsWith('/en/') ? pathname.slice(3) : pathname
@@ -31,7 +34,12 @@ export function SiteHeader({ lang, homeHref, items, cta, labels }: Props) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  useEffect(() => setOpen(false), [pathname])
+  // Sayfa değişince mobil menüyü kapat (efekt yerine render sırasında; ekstra render olmaz).
+  const [lastPath, setLastPath] = useState(pathname)
+  if (lastPath !== pathname) {
+    setLastPath(pathname)
+    setOpen(false)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -81,6 +89,16 @@ export function SiteHeader({ lang, homeHref, items, cta, labels }: Props) {
                 </Link>
               </li>
             ))}
+            <li>
+              <a
+                href={FTC_SCOUT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label relative px-3 py-2 text-paper/70 transition hover:text-paper"
+              >
+                FTC Scout <span aria-hidden>↗</span>
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -127,6 +145,17 @@ export function SiteHeader({ lang, homeHref, items, cta, labels }: Props) {
                 </Link>
               </li>
             ))}
+            <li className="border-b border-line">
+              <a
+                href={FTC_SCOUT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-baseline gap-4 py-4"
+              >
+                <span className="display text-3xl">FTC Scout</span>
+                <span aria-hidden className="text-2xl text-muted">↗</span>
+              </a>
+            </li>
           </ul>
           <Link href={cta.href} className="btn btn-accent mt-8">
             {cta.label} <span aria-hidden>→</span>
