@@ -142,9 +142,6 @@ export interface Member {
   bio?: string | null;
   instagramUrl?: string | null;
   linkedinUrl?: string | null;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
   order?: number | null;
   isActive?: boolean | null;
   updatedAt: string;
@@ -156,9 +153,6 @@ export interface Member {
  */
 export interface Media {
   id: number;
-  /**
-   * Görme engelliler ve arama motorları için görselde ne olduğunu yaz.
-   */
   alt: string;
   prefix?: string | null;
   _objectKey?: string | null;
@@ -207,21 +201,12 @@ export interface Media {
 export interface Competition {
   id: number;
   name: string;
-  /**
-   * Örn. 2025-26
-   */
   season?: string | null;
   date?: string | null;
   location?: string | null;
-  /**
-   * Örn. Bölge 3.lüğü, Finalist
-   */
   result?: string | null;
   description?: string | null;
   image?: (number | null) | Media;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
   order?: number | null;
   isActive?: boolean | null;
   updatedAt: string;
@@ -238,9 +223,6 @@ export interface Award {
   date?: string | null;
   description?: string | null;
   image?: (number | null) | Media;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
   order?: number | null;
   isActive?: boolean | null;
   updatedAt: string;
@@ -255,14 +237,8 @@ export interface Sponsor {
   name: string;
   tier: 'platinum' | 'gold' | 'silver' | 'bronze' | 'partner';
   url?: string | null;
-  /**
-   * Mümkünse şeffaf arka planlı PNG veya SVG.
-   */
   logo?: (number | null) | Media;
   description?: string | null;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
   order?: number | null;
   isActive?: boolean | null;
   updatedAt: string;
@@ -294,9 +270,6 @@ export interface Resource {
   url: string;
   description?: string | null;
   image?: (number | null) | Media;
-  /**
-   * Küçük sayı önce gösterilir.
-   */
   order?: number | null;
   isActive?: boolean | null;
   updatedAt: string;
@@ -309,9 +282,6 @@ export interface Resource {
 export interface User {
   id: number;
   name: string;
-  /**
-   * Editör içerik düzenler; kullanıcıları ve site ayarlarını yalnızca Yönetici değiştirir.
-   */
   roles: ('admin' | 'editor')[];
   updatedAt: string;
   createdAt: string;

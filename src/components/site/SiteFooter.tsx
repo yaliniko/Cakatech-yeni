@@ -81,13 +81,13 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       </div>
 
       <div className="relative border-t border-line bg-ink-2">
-        <Container className="py-12 sm:py-16">
-          <p className="label text-accent">{dict.footer.writeUs}</p>
+        <Container className="flex flex-col items-center gap-2 py-8 text-center">
+          <p className="label text-[0.62rem] text-accent">{dict.footer.writeUs}</p>
           <a
             href={`mailto:${contactEmail}`}
-            className="display mt-4 block text-[clamp(1.5rem,5.2vw,4.5rem)] leading-tight normal-case break-all transition hover:text-accent"
+            className="text-base text-paper transition hover:text-accent sm:text-lg"
           >
-            {contactEmail} <span aria-hidden>↗</span>
+            {contactEmail}
           </a>
         </Container>
       </div>
