@@ -2,14 +2,19 @@
 
 FTC robotik takımı Çakatech'in sitesi 
 
-**Stack:** Next.js 16 · Payload CMS 3 · SQLite (yerelde dosya, yayında Turso) · Tailwind CSS 4 · TypeScript
-**Yayın:** Vercel (ücretsiz) + Turso veritabanı (ücretsiz) + Vercel Blob görsel deposu (ücretsiz)
+**Stack:** Next.js 16 · Payload CMS 3 · PostgreSQL (yerelde Docker, yayında Neon) · Tailwind CSS 4 · TypeScript
+**Yayın:** Vercel (ücretsiz) + Neon Postgres (ücretsiz) + Vercel Blob görsel deposu (ücretsiz)
 
 ## Yerelde çalıştırma
 
 ```bash
+# Yerel Postgres (bir kez; sonraki seferlerde: docker start cakatech-pg)
+docker run -d --name cakatech-pg -e POSTGRES_USER=cakatech -e POSTGRES_PASSWORD=cakatech \
+  -e POSTGRES_DB=cakatech -p 5432:5432 -v cakatech-pg-data:/var/lib/postgresql/data postgres:17
+
 cp .env.example .env        # PAYLOAD_SECRET'ı değiştir: openssl rand -hex 32
 npm install
+npm run payload -- migrate  # şemayı kurar
 npm run dev                 # http://localhost:3000  ·  panel: http://localhost:3000/admin
 ```
 
@@ -24,11 +29,22 @@ Faydalı komutlar:
 | `npx tsc --noEmit` | Tip kontrolü |
 | `npm run build` | Üretim derlemesi |
 
-## Yayına alma (Vercel + Turso)
+## Yayına alma (Vercel + Neon)
 
-### 1. Turso veritabanı
-1. https://turso.tech → ücretsiz hesap → **Create Database** (ad: `cakatech`, bölge: Avrupa).
-2. Veritabanı sayfasından **URL**'yi (`libsql://cakatech-….turso.io`) ve **Create Token** ile bir token al.
+### 1. Neon veritabanı
+Vercel → **Storage → Create Database → Neon (Postgres)** → bölge: Frankfurt → projeye bağla.
+Bu, `DATABASE_URL` değişkenini otomatik ekler. Proje henüz yoksa önce 3. adımı yap; ilk deploy
+veritabanı olmadan başarısız olur, Neon'u bağladıktan sonra **Redeploy** et.
+(Alternatif: https://neon.tech'te elle oluşturup bağlantı adresini `DATABASE_URL` olarak girmek.)
+
+**Eski Turso verisini taşımak (bir kez):** Neon'da şema kurulduktan sonra (ilk başarılı deploy),
+panelde hiçbir şey eklemeden:
+
+```bash
+SOURCE_URL=libsql://<db>.turso.io SOURCE_AUTH_TOKEN=<turso-token> \
+TARGET_URL='<neon-bağlantı-adresi>' DRY_RUN=1 node scripts/sqlite-to-postgres.mjs   # önce sadece sayar
+# Sayılar doğruysa DRY_RUN=1 olmadan tekrar çalıştır.
+```
 
 ### 2. GitHub
 Bu klasörü GitHub'da yeni bir repoya push'la (`.env` ve `*.db` zaten `.gitignore`'da).
@@ -40,8 +56,7 @@ Bu klasörü GitHub'da yeni bir repoya push'la (`.env` ve `*.db` zaten `.gitigno
 
    | Değişken | Değer |
    |---|---|
-   | `DATABASE_URL` | Turso URL'si (`libsql://…`) |
-   | `DATABASE_AUTH_TOKEN` | Turso token'ı |
+   | `DATABASE_URL` | Neon bağlantı adresi (`postgresql://…`; Neon entegrasyonu otomatik ekler) |
    | `PAYLOAD_SECRET` | `openssl rand -hex 32` çıktısı (yereldekinden farklı olsun) |
 
 3. **Deploy**.
