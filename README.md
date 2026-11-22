@@ -37,17 +37,8 @@ Bu, `DATABASE_URL` değişkenini otomatik ekler. Proje henüz yoksa önce 3. ad�
 veritabanı olmadan başarısız olur, Neon'u bağladıktan sonra **Redeploy** et.
 (Alternatif: https://neon.tech'te elle oluşturup bağlantı adresini `DATABASE_URL` olarak girmek.)
 
-**Eski Turso verisini taşımak (bir kez):** Neon'da şema kurulduktan sonra (ilk başarılı deploy),
-panelde hiçbir şey eklemeden:
-
-```bash
-SOURCE_URL=libsql://<db>.turso.io SOURCE_AUTH_TOKEN=<turso-token> \
-TARGET_URL='<neon-bağlantı-adresi>' DRY_RUN=1 node scripts/sqlite-to-postgres.mjs   # önce sadece sayar
-# Sayılar doğruysa DRY_RUN=1 olmadan tekrar çalıştır.
-```
-
 ### 2. GitHub
-Bu klasörü GitHub'da yeni bir repoya push'la (`.env` ve `*.db` zaten `.gitignore`'da).
+Bu klasörü GitHub'da yeni bir repoya push'la (`.env` zaten `.gitignore`'da).
 
 ### 3. Vercel
 1. https://vercel.com → **Add New → Project** → GitHub reposunu seç. Framework: Next.js (otomatik).
