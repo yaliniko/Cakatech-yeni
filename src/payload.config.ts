@@ -1,4 +1,4 @@
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
@@ -68,12 +68,11 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  // Yerelde: file:./cakatech.db (SQLite dosyası). Yayında: Turso (libsql://…) + DATABASE_AUTH_TOKEN.
+  // Postgres. Yerelde: Docker (bkz. README). Yayında: Neon (Vercel entegrasyonu DATABASE_URL'i ekler).
   // Yayında şema, build sırasında `payload migrate` ile güncellenir (bkz. package.json "ci").
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || '',
-      authToken: process.env.DATABASE_AUTH_TOKEN,
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL || '',
     },
   }),
   sharp,
